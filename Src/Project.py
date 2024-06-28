@@ -1,6 +1,10 @@
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+from sklearn.inspection import DecisionBoundaryDisplay
 
 """
 Task: Develop a methodology that is based on the train data (face embeddings /
@@ -34,10 +38,44 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 ### define model for gender classification
-model = LogisticRegression(max_iter=1000)
+#mystuff
+model = Pipeline(
+    steps=[("scaler", StandardScaler()), ("knn", KNeighborsClassifier(n_neighbors=2))]
+)
+
+_, axs = plt.subplots(ncols=2, figsize=(12, 5))
+
+for ax, weights in zip(axs, ("uniform", "distance")):
+    model.set_params(knn__weights=weights).fit(X_train, y_train)
+    """ disp = DecisionBoundaryDisplay.from_estimator(
+        clf,
+        X_test,
+        response_method="predict",
+        plot_method="pcolormesh",
+        xlabel="x",
+        ylabel="y",
+        shading="auto",
+        alpha=0.5,
+        ax=ax,
+    )
+    scatter = disp.ax_.scatter(X.iloc[:, 0], X.iloc[:, 1], c=y, edgecolors="k")
+    disp.ax_.legend(
+        scatter.legend_elements()[0],
+        iris.target_names,
+        loc="lower left",
+        title="Classes",
+    )
+    _ = disp.ax_.set_title(
+        f"3-Class classification\n(k={clf[-1].n_neighbors}, weights={weights!r})"
+    ) """
+
+#plt.show()
+
+#mystuffend
+#model = LogisticRegression(max_iter=1000)
 
 ### training
-model.fit(X_train, y_train)
+#model.fit(X_train, y_train)
 
 ### evaluation
 
