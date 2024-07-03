@@ -11,6 +11,3 @@ X_train = np.load("Data/X_train.npy")
 y_train = np.load("Data/y_train.npy")  # 6k male (m), 2k female (f)
 X_test = np.load("Data/X_test.npy")
 y_test = np.load("Data/y_test.npy")  # 2k male (m), 2k female (f)
-
-
-print(X_train)

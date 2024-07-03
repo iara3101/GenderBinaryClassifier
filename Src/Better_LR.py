@@ -8,19 +8,13 @@ from imblearn.pipeline import Pipeline
 import os
 
 # Set LOKY_MAX_CPU_COUNT to silence the core detection warning
-os.environ["LOKY_MAX_CPU_COUNT"] = "2"  # Set this to the number of cores you want to use
-
+os.environ["LOKY_MAX_CPU_COUNT"] = "2"
 
 # Load data
 X_train = np.load("Data/X_train.npy")
 y_train = np.load("Data/y_train.npy")  # 6k male (m), 2k female (f)
 X_test = np.load("Data/X_test.npy")
 y_test = np.load("Data/y_test.npy")  # 2k male (m), 2k female (f)
-
-# # Convert labels to numeric values
-# label_mapping = {'m': 0, 'f': 1}
-# y_train = np.array([label_mapping[label] for label in y_train])
-# y_test = np.array([label_mapping[label] for label in y_test])
 
 ### feature normalization
 scaler = StandardScaler()
@@ -55,26 +49,6 @@ grid_search.fit(X_train, y_train)
 
 # Best model
 best_model = grid_search.best_estimator_
-
-
-# # Evaluate on validation set
-# y_val_pred = best_model.predict(X_val)
-# print("Validation Classification Report:\n", classification_report(y_val, y_val_pred))
-# print("Validation ROC AUC Score:", roc_auc_score(y_val, y_val_pred))
-
-# # Evaluate on the test set
-# y_test_pred = best_model.predict(X_test)
-# print("Test Classification Report:\n", classification_report(y_test, y_test_pred))
-# print("Test ROC AUC Score:", roc_auc_score(y_test, y_test_pred))
-
-# # Accuracy per class on the test set
-# idx_m = y_test == "m"
-# idx_f = y_test == "f"
-
-# acc_m = np.mean(y_test_pred[idx_m] == y_test[idx_m])
-# acc_f = np.mean(y_test_pred[idx_f] == y_test[idx_f])
-# print("Test Accuracy M: {}".format(acc_m))
-# print("Test Accuracy F: {}".format(acc_f))
 
 ### evaluation
 
