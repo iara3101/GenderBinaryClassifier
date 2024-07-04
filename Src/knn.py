@@ -3,6 +3,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
 
 """
 Task: Develop a methodology that is based on the train data (face embeddings /
@@ -36,9 +37,7 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 ### define model for gender classification
-model = Pipeline(
-    steps=[("scaler", StandardScaler()), ("knn", KNeighborsClassifier(n_neighbors=2))]
-)
+model = KNeighborsClassifier(n_neighbors=2)
 
 ### fit data
 model.fit(X_train, y_train)
