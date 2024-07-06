@@ -36,7 +36,35 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 ### define model for gender classification
-model = svm.SVC(kernel='linear', C=1)
+# Acc: 0.812
+# Acc M: 0.812
+# Acc F: 0.812
+model = svm.SVC(kernel='rbf', class_weight={"f": 3}, C=0.3, gamma="scale", decision_function_shape="ovr")
+
+# Acc: 0.827
+# Acc M: 0.8075
+# Acc F: 0.8465
+# model = svm.SVC(kernel='rbf', class_weight={"f": 5}, C=0.5, gamma="scale", decision_function_shape="ovr")
+
+# Acc: 0.82925
+# Acc M: 0.773
+# Acc F: 0.8855
+# model = svm.SVC(kernel='poly', class_weight={"f": 4}, C=0.2, gamma="scale", decision_function_shape="ovr")
+
+# Acc: 0.83225
+# Acc M: 0.7865
+# Acc F: 0.878
+# model = svm.SVC(kernel='poly', class_weight={"f": 4}, C=0.21, gamma="scale", decision_function_shape="ovr")
+
+# Acc: 0.8235
+# Acc M: 0.824
+# Acc F: 0.823
+# model = svm.SVC(kernel='poly', class_weight={"f": 3.5}, C=0.23, gamma="scale", decision_function_shape="ovr")
+
+# Acc: 0.82625
+# Acc M: 0.8095
+# Acc F: 0.843
+# model = svm.SVC(kernel='poly', class_weight={"f": 4}, C=0.3, degree=2, gamma="scale", decision_function_shape="ovr")
 
 ### fit data
 model.fit(X_train, y_train)
