@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline
 import os
+from sklearn.ensemble import GradientBoostingClassifier
 
 # Set LOKY_MAX_CPU_COUNT to silence the core detection warning
 os.environ["LOKY_MAX_CPU_COUNT"] = "2"
@@ -34,13 +35,14 @@ X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.
 pipeline = Pipeline([
     ('scaler', StandardScaler()),
     ('oversample', SMOTE(sampling_strategy='auto', random_state=42)),
-    ('model', LogisticRegression(max_iter=5000, class_weight='balanced', solver='lbfgs'))
+    ('model', GradientBoostingClassifier())
 ])
 
 # Define hyperparameters for GridSearch
 param_grid = {
-    'model__C': [0.1, 1, 10],
-    'model__solver': ['liblinear', 'saga']
+    'model__n_estimators': [100, 200, 500],
+    'model__learning_rate': [0.01, 0.1, 0.2],
+    'model__max_depth': [3, 5, 7]
 }
 
 # Perform Grid Search with cross-validation
@@ -52,15 +54,15 @@ best_model = grid_search.best_estimator_
 
 ### evaluation
 
-# accuracy (the test data is balanced)
+# accuracy (the test data is balanced)     
 acc = best_model.score(X_test, y_test)
 print("Acc: {}".format(acc))
  
 # accuracy per class
-y_pred = best_model.predict(X_test)
+y_pred = best_model.predict(X_test)  
 
-idx_m = y_test==0
-idx_f = y_test==1
+idx_m = y_test=="m"
+idx_f = y_test=="f"
 
 acc_m = best_model.score(X_test[idx_m], y_test[idx_m])
 acc_f = best_model.score(X_test[idx_f], y_test[idx_f])
